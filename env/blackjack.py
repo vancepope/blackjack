@@ -6,10 +6,9 @@ import logging.config
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format="%(levelname)s %(asctime)s %(message)s",
+    format= "%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s",
     handlers=[
-        logging.FileHandler(r'info.log'),
-        logging.StreamHandler()
+        logging.FileHandler(r'info.log')
     ]
 )
 
