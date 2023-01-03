@@ -1,6 +1,19 @@
 from datetime import date
 import random
 import csv
+import logging
+import logging.config
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(levelname)s %(asctime)s %(message)s",
+    handlers=[
+        logging.FileHandler(r'info.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 class Card: 
     def __init__(self, card = '', suit = ''):
@@ -48,16 +61,23 @@ class Deck(Card):
     
     @staticmethod
     def createDeck(self):
+        logger.info("Creating deck")
         for card in self.cards:
             for suit in self.suits:
                 self.deck.append(Card(card, suit))
+        logger.info("Finished creating deck")
     @staticmethod   
     def shuffle(self):
+        logger.info("Shuffling cards")
         random.shuffle(self.deck)
+        logger.info("Finished shuffling cards")
 
     def deal(self):
+        logger.info("Entered deal method")
         self.shuffle(self)
         newCard = self.deck.pop()
+        logger.info("Finished deal method")
+        
         return newCard
     
 class Hand(Deck):
@@ -69,14 +89,18 @@ class Hand(Deck):
         self.hand = []
     
     def addCard(self, card):
+        logger.info("Entered addCard method")
         self.hand.append(card)
         value = self.values[card.getCard]
         self.value += value
+        logger.info("Finished addCard method")
 
     def ace(self):
+        logger.info("Entered ace method")
         while self.value > 21 and self.aces:
             self.value -= 10
             self.aces -= 1
+        logger.info("Finished ace method")
             
 class BlackJack:
     def __init__(self, name):
@@ -101,10 +125,13 @@ class BlackJack:
         self.isPlaying = isPlaying
     
     def hit(self, card, hand):
+        logger.info("Added card to hand")
         hand.addCard(card)
         hand.ace()
+        logger.info("Finished adding card to hand")
      
     def hitStay(self, deck, hand):
+        logger.info("Entered hitStay method")
         answer = input("Would you like to hit or stay?: ").lower()
         if (answer == "hit"):
             self.hit(deck.deal(), hand)
@@ -120,9 +147,11 @@ class BlackJack:
                 print("***************************************************************")
                 print("*                     PLAYER STAYS                            *")
                 print("***************************************************************")
+        logger.info("histStay method completed")
         return answer
              
     def showCards(self, player, dealer):
+        logger.info("Entered showCards method")
         print("***************************************************************")
         print(f"*     Dealer: {dealer.hand}                       ")
         print(f"*                        Value: {dealer.value}                        ")
@@ -131,8 +160,10 @@ class BlackJack:
         print(f"*                        Value: {player.value}                        ")
         print(f"*                                                             ")   
         print("***************************************************************")
+        logger.info("Finished showCards method")
     
     def play(self):
+        logger.info("The game has started. ")
         self.setIsPlaying = True
         name = input("Please Enter your name: ").upper()
         print(f"****************************************************************")
@@ -197,5 +228,6 @@ class BlackJack:
             userInput = input("Would you like another deal, Yes or No?: ").lower()
             if userInput == "no":
                 self.setIsPlaying = False
+                logger.info("The game has ended. ")
 game = BlackJack("Black Jack")
 game.play()
