@@ -112,10 +112,10 @@ class BlackJack:
     @property
     def getName(self):
         return self.name
-    
     @getName.setter
     def setName(self, name):
         self.name = name
+        
     @property
     def getIsPlaying(self):
         return self.isPlaying
@@ -229,4 +229,7 @@ class BlackJack:
                 self.setIsPlaying = False
                 logger.info("The game has ended. ")
 game = BlackJack("Black Jack")
-game.play()
+try:
+    game.play()
+except Exception as e:
+    logger.error(f"{e} has been thrown")
