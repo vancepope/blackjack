@@ -40,7 +40,7 @@ class Deck(Card):
         self.suits = suits
         self.values = values
         self.deck = []
-    
+
     @property
     def getCards(self):
         return self.cards
@@ -65,6 +65,7 @@ class Deck(Card):
             for suit in self.suits:
                 self.deck.append(Card(card, suit))
         logger.info("Finished creating deck")
+        
     @staticmethod   
     def shuffle(self):
         logger.info("Shuffling cards")
@@ -230,6 +231,7 @@ class BlackJack:
                 logger.info("The game has ended. ")
 game = BlackJack("Black Jack")
 try:
-    game.play()
+    if __name__ == "__main__":
+        game.play()
 except Exception as e:
     logger.error(f"{e} has been thrown")
