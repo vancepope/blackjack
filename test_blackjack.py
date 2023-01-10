@@ -11,14 +11,21 @@ class TestDeck:
     deck = []
     directory = "src.blackjack.Deck"
     
-    def test_create_deck(self):
-        deck = Deck()
-        deck.createDeck(self)
-        assert len(self.deck) == 52
+    @pytest.fixture
+    def create_deck(self):
+        for card in self.cards:
+            for suit in self.suits:
+                self.deck.append(Card(card, suit))
+        return self.deck
+    
+    def test_create_deck(self, create_deck, mocker):
+        deck = mocker.patch(f"{self.directory}.createDeck", return_value=self.deck)
+        assert create_deck is deck.return_value
     
     def test_deal(self, mocker):
         newCard = mocker.patch(f"{self.directory}.deal", return_value=Card("Ace", "Diamonds"))
         assert type(newCard.return_value) == Card
+        assert str(newCard.return_value) == "Ace of Diamonds"
         
 class TestBlackJack:
     directory = "src.blackjack.BlackJack"
@@ -40,6 +47,11 @@ class TestHand:
         assert type(hand.return_value) == list
         assert len(hand.return_value) == 1
         assert type(hand.return_value[0]) == Card
+        assert str(hand.return_value[0]) == "Ace of Diamonds"
         
+class TestCard:
+    directory = "src.blackjack.Card"
+    def test___repr__(self, mocker):
+        result = mocker.patch(f"{self.directory}.__repr__", return_value=Card("Ace", "Diamonds"))
+        assert str(result.return_value) == "Ace of Diamonds"
         
-    
