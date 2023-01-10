@@ -6,3 +6,4 @@ pytest-pep8
 pytest-pythonpath
 requests
 pytest-mock
+pytest-html
